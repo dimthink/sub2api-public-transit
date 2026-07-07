@@ -65,7 +65,9 @@ curl https://your-domain.example/api/public/transit/v1/snapshot
 
 ## 接入方式
 
-如果你的 Sub2API 版本接近上游主线，推荐直接 cherry-pick 本仓库的功能提交：
+这个功能已经在本仓库完成实现。对其他站长来说，接入方式不是重新开发，而是像合并一个 PR 一样，把功能提交 `2d7e9dec` 合入自己的 Sub2API 仓库。
+
+如果你的 Sub2API 版本接近上游主线，推荐直接 cherry-pick：
 
 ```bash
 git remote add public-transit https://github.com/dimthink/sub2api-public-transit.git
@@ -73,7 +75,7 @@ git fetch public-transit main
 git cherry-pick 2d7e9dec
 ```
 
-如果你的仓库改动较多，也可以下载 patch 后手动应用：
+如果你的仓库改动较多，也可以下载同一个提交的 patch 后应用：
 
 ```bash
 curl -L https://github.com/dimthink/sub2api-public-transit/commit/2d7e9dec.patch -o public-transit.patch
@@ -93,27 +95,38 @@ git am public-transit.patch
 如果你希望让自己的 Codex、Claude Code、Cursor Agent 或其他代码助手自动接入，可以把下面这段直接发给它：
 
 ```text
-请在当前 Sub2API 仓库中接入“公开资料出口”功能。
+请把 Sub2API “公开资料出口”功能合并到当前仓库。
 
 参考仓库：
 https://github.com/dimthink/sub2api-public-transit
 
+已完成的功能提交：
+2d7e9dec feat: expose public transit snapshot
+
 目标：
-1. 不要把我的仓库直接替换成参考仓库。
-2. 先确认当前仓库的上游来源、当前分支、未提交改动和 Sub2API 版本。
-3. 从参考仓库中找出它相对 Wei-Shaw/sub2api 最新主线新增的唯一功能提交。
-4. 优先用 cherry-pick 接入这个提交；如果我的仓库已经深度二改导致冲突较多，就改用 patch 方式手动合并。
-5. 合并时保留我的现有数据、配置、部署文件和本地改动，不要重置仓库，不要删除数据库或数据卷。
-6. 接入后确认至少存在这些能力：
+1. 这不是让你重新实现功能，也不是让你手写一套类似功能。
+2. 请像合并 PR 一样，把参考仓库里已经完成的功能提交 `2d7e9dec` 合入当前仓库。
+3. 不要把当前仓库替换成参考仓库，不要重置仓库，不要删除数据库、数据卷、部署文件或本地配置。
+4. 合并前先检查当前分支、未提交改动和远程来源；如果工作区不干净，先提醒我确认如何处理。
+5. 推荐流程：
+   - git remote add public-transit https://github.com/dimthink/sub2api-public-transit.git
+   - git fetch public-transit main
+   - git switch -c feature/public-transit-snapshot
+   - git cherry-pick 2d7e9dec
+6. 如果 cherry-pick 有冲突，只处理冲突文件，把这个提交里的公开资料出口功能合进来；不要借机重构无关代码。
+7. 如果当前仓库二改太深，cherry-pick 不适合，再下载同一个提交的 patch 合并：
+   - curl -L https://github.com/dimthink/sub2api-public-transit/commit/2d7e9dec.patch -o public-transit.patch
+   - git am public-transit.patch
+8. 接入后确认至少存在这些能力：
    - /.well-known/ai-transit.json
    - /api/public/transit/v1/snapshot
    - /public/transit
    - 后台“系统设置 -> 功能开关 -> 公开资料出口”中的接口开关和页面开关
-7. 接入后运行关键验证：
+9. 接入后运行关键验证：
    - go test ./internal/service ./internal/handler ./internal/server ./internal/repository ./internal/web -tags embed
    - pnpm --dir frontend run build
-8. 如果测试失败，先定位是否是合并冲突或本地二改导致，不要盲目升级依赖。
-9. 最后给我输出：
+10. 如果测试失败，先定位是否是合并冲突或本地二改导致，不要盲目升级依赖。
+11. 最后给我输出：
    - 接入的 commit hash
    - 冲突文件和处理方式
    - 验证命令结果
