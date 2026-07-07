@@ -175,6 +175,15 @@ const routes: RouteRecordRaw[] = [
       title: 'Legal Document'
     }
   },
+  {
+    path: '/public/transit',
+    name: 'PublicTransit',
+    component: () => import('@/views/public/PublicTransitView.vue'),
+    meta: {
+      requiresAuth: false,
+      title: 'Public Transit'
+    }
+  },
 
   // ==================== User Routes ====================
   {

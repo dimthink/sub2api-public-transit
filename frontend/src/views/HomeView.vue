@@ -48,6 +48,14 @@
 
         <!-- Nav Actions -->
         <div class="flex items-center gap-3">
+          <router-link
+            v-if="publicTransitEnabled"
+            to="/public/transit"
+            class="hidden items-center rounded-full border border-gray-200 bg-white/70 px-3 py-1 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:border-dark-700 dark:bg-dark-800/70 dark:text-dark-200 dark:hover:bg-dark-700 sm:inline-flex"
+          >
+            {{ t('publicTransit.nav') }}
+          </router-link>
+
           <!-- Language Switcher -->
           <LocaleSwitcher />
 
@@ -134,6 +142,13 @@
               >
                 {{ isAuthenticated ? t('home.goToDashboard') : t('home.getStarted') }}
                 <Icon name="arrowRight" size="md" class="ml-2" :stroke-width="2" />
+              </router-link>
+              <router-link
+                v-if="publicTransitEnabled"
+                to="/public/transit"
+                class="btn btn-secondary ml-3 px-6 py-3 text-base"
+              >
+                {{ t('publicTransit.nav') }}
               </router-link>
             </div>
           </div>
@@ -422,6 +437,10 @@ const siteLogo = computed(() => appStore.cachedPublicSettings?.site_logo || appS
 const siteSubtitle = computed(() => appStore.cachedPublicSettings?.site_subtitle || 'AI API Gateway Platform')
 const docUrl = computed(() => appStore.cachedPublicSettings?.doc_url || appStore.docUrl || '')
 const homeContent = computed(() => appStore.cachedPublicSettings?.home_content || '')
+const publicTransitEnabled = computed(() =>
+  appStore.cachedPublicSettings?.public_transit_enabled === true &&
+  appStore.cachedPublicSettings?.public_transit_page_enabled === true
+)
 
 // Check if homeContent is a URL (for iframe display)
 const isHomeContentUrl = computed(() => {
