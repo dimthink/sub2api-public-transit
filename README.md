@@ -3,6 +3,7 @@
 本仓库基于 [Wei-Shaw/sub2api](https://github.com/Wei-Shaw/sub2api) 最新主线整理，额外加入一个面向中转站站长和第三方采集器的“公开资料出口”功能。
 
 它的目标不是开放后台，也不是暴露账号池，而是把站点本来适合公开的信息标准化输出，方便 PriceAI 或其他采集器自动识别模型价格、分组倍率、缓存命中和可用性状态。
+<img width="3420" height="1902" alt="image" src="https://github.com/user-attachments/assets/494d7445-3874-478f-af6c-b18a59652dec" />
 
 ## 新增能力
 
